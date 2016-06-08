@@ -127,6 +127,39 @@
 
 <br>
 
+**再来模拟一下`createStore`的工作原理。**
+
+<br>
+
+	const createStore = (reducer) => {
+		let state;
+		let listeners = [];
+
+		const getState = () => state;
+
+		const dispatch = (action) => {
+			state = reducer(state, action);
+			listeners.forEach(listener => listener());
+		};
+
+		const subscribe = (listener) => {
+			listeners.push(listener);
+			return () => {
+				listeners = listeners.filter(l => l !== listener);
+			};
+		};
+
+		dispatch({});
+
+		return { getState, dispatch, subscribe };
+	}
+
+- `createStore`内部维护着状态和监听事件的一个数组
+- 调用`dispatch`方法就是让reducer工作，原来上面例子中的counter方法就是reducer,reducer就是调用方法更新state.dispatch还触发所有的注册事件
+
+<br>
+
+
 
 
 
