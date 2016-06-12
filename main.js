@@ -1,4 +1,4 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -56,19 +56,25 @@ const visibilityFilter = (
   }
 };
 
-//合并成一个Reducer
-const todoApp = (state = {}, action) => {
-  return {
-    todos: todos(
-      state.todos,
-      action
-    ),
-    visibilityFilter: visibilityFilter(
-      state.visibilityFilter,
-      action
-    )
-  };
-};
+//合并成一个Reducer，使用对象
+//const todoApp = (state = {}, action) => {
+//  return {
+//    todos: todos(
+//      state.todos,
+//      action
+//    ),
+//    visibilityFilter: visibilityFilter(
+//      state.visibilityFilter,
+//      action
+//    )
+//  };
+//};
+
+//合并成一个Reducer,使用combineReducers
+const todoApp = combineReducers({
+   todos: todos,
+    visibilityFilter: visibilityFilter
+});
 
 const store = createStore(todoApp);
 
